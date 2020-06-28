@@ -2,10 +2,9 @@ import numpy as np
 import cv2
 import random
 
-repeats = 2 #how many turns - Make it >1
-r1 = 0.3
-r2 = 0.7
-
+repeats = 3
+r1 = 0.2
+r2 = 0.9
 
 def Init(imgAddress):
     img = cv2.imread(imgAddress, cv2.IMREAD_COLOR)
@@ -59,7 +58,6 @@ def RotationTransformPi4(Z, r, c):
             Z1[i][j] = ROTATION(Z1[i][j], 1, np.pi/4)
     return(Z1)
 
-#ROTATE
 def RotationTransform(Z, r, c):
     Z1 = Z[:r, :c].copy()
     alpha = np.arctan( ( np.log(max(r2, r1) / min(r1, r2) ) / ( 2 * np.pi ) ) )
@@ -111,12 +109,11 @@ def CalculateXNewYNewTILED(Z, r, c):
     Ynew = makeNewXY(Wy, wymax, r)
     return Xnew, Ynew
 
-def main():
-    img, r, c, Z = Init('CAPTURE.png')
-    if repeats != 1:
-        Xnew, Ynew = CalculateXNewYNewTILED(Z, r, c)
-    else:
-        Xnew, Ynew = CalculateXNewYNew(Z, r, c)
-    newImg = recreateImage(Xnew, Ynew, img, r, c, repeats)
-    cv2.imwrite("OUTPUT.png", newImg);
+img, r, c, Z = Init('INPUT.png')
+if repeats != 1:
+    Xnew, Ynew = CalculateXNewYNewTILED(Z, r, c)
+else:
+    Xnew, Ynew = CalculateXNewYNew(Z, r, c)
+newImg = recreateImage(Xnew, Ynew, img, r, c, repeats)
+cv2.imwrite("PrideCircleAfter.png", newImg);
 #input()
