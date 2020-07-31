@@ -18,6 +18,7 @@ def pol2cart(rho, phi):
     y = rho * np.sin(phi)
     return(x, y)
 
+#Here I am showing that the lambda functions I've stole from Stack Overflow are just versions of simple trig functions. With the benefit that they allow matrix operations in one go.
 #https://stackoverflow.com/questions/2164570/reprojecting-polar-to-cartesian-grid
 #https://stackoverflow.com/questions/20924085/python-conversion-between-coordinates
 #r = np.sqrt(x**2 + y**2)
@@ -25,9 +26,10 @@ def pol2cart(rho, phi):
 polar2z = lambda r,theta: r * np.exp( 1j * theta )
 z2polar = lambda z: (abs(z), np.angle(z)) #awful rounding error from Python that complicates matters
 
+#these are openCV functions I've tried with the hope of gettign better results but the 'theta' is expressed in different units - > so these are to ignore and erase.
 #https://programmer.group/reading-notes-opencv-polar-coordinate-transformation.html
 #r2, theta2 = cv2.cartToPolar(x, y, angleInDegrees=True)
-#x, y = cv2.polarToCart(r1, theta, angleInDegrees=True) #theta is expressed in different units, see docum
+#x, y = cv2.polarToCart(r1, theta, angleInDegrees=True) #theta is expressed in different units, see documentation
 
 def escher_deformation(x,y):
     '''
@@ -35,7 +37,7 @@ def escher_deformation(x,y):
     '''
 
     #FROM CARTESIAN TO COMPLEX
-    Z = x+ y * 1j #== Z = r*np.exp(1j*th) #awful rounding error that complicates matters
+    Z = x+ y * 1j # this is the same as:  Z = r*np.exp(1j*th) #awful rounding error that complicates matters
     #r, th = z2polar(Z)  #complex in exponential representation -not used as it gives rounding errors
 
     #APPLY LOG TO THE COMPLEX PLANE
@@ -44,11 +46,20 @@ def escher_deformation(x,y):
 
     #APPLY ESCHER TRANSFORM
     sn = 1 - (np.log(deformation_scale) * 1j * (1 / (2 * np.pi)))  #1- log(256)i/2.PI #TODO: Dmytro to change
+
     #Rotation
     lnz_sn = lnz * sn
     #Exponentiation
+    '''
+    This is just a test of the exp function, just to make sure that Python was doing the right thing. It can be deleted.
+    Z = Z.flatten()  # converts to 1D (to apply the Exp operation)
+    Z = np.power(np.e, Z)
+    ez = Z.reshape(x.shape)  # converts back to 2D
+    '''
     ez = np.exp(lnz_sn)
-
+    #ez = np.exp(Z) #TODO: The exponentiation is now working well, if I input the Log, I don't get back the circle
+    #TODO: see if it's a display/mapping issue or why the exp is not working
+    #TODO: oddly enough, it's just the exp that is not working!
 
     #DISPLAY - choose one to see output #TODO: JIM if you change this, you get the 3 steps
     #transform = lnz    #displays the log in the complex plane
@@ -95,8 +106,8 @@ def create_total_image_after_mapping(Xnew, Ynew, image):
 
 def main():
 
-    inFile  = 'images/escher_straight2.jpg'
-    outFile = 'images/escher_straight2_log_rotate_exp.png'
+    inFile  = 'images/circle_log.png'
+    outFile = 'images/circle_log_exp.png'
 
     #READ IMAGE
     src = np.array(cv2.imread(inFile))  # #TODO: Jim, this one reads JPG and PNG
