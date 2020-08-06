@@ -14,39 +14,25 @@ def escher_deformation(x,y):
     '''
 
     #FROM CARTESIAN TO COMPLEX
-    Z = x+ y * 1j # this is the same as:  Z = r*np.exp(1j*th) #awful rounding error that complicates matters
-    #r, th = z2polar(Z)  #complex in exponential representation -not used as it gives rounding errors
+    Z = x+ y * 1j 
 
     #APPLY LOG TO THE COMPLEX PLANE
-    #Z = np.log(r) + th * 1j #Log of complex nbr represented in exp form - small rounding errors on this one
-    lnz = np.log(Z) # 1 line!
+    lnz = np.log(Z) 
 
     #APPLY ESCHER TRANSFORM
     # need the value of gamma from #3 in https://github.com/lcipolina/escher/blob/Lucia/Math%20Behind%20Escher.pdf
-    # sn = 1 - (np.log(deformation_scale) * 1j * (1 / (2 * np.pi)))  #1- log(256)i/2.PI #TODO: Dmytro to change
-    # the same thing but written more cleanly
     sn = 1 - (1j * np.log(deformation_scale)) / (2 * np.pi)
 
     #Rotation
     lnz_sn = lnz * sn
+    
     #Exponentiation
-    '''
-    This is just a test of the exp function, just to make sure that Python was doing the right thing. It can be deleted.
-    Z = Z.flatten()  # converts to 1D (to apply the Exp operation)
-    Z = np.power(np.e, Z)
-    ez = Z.reshape(x.shape)  # converts back to 2D
-    '''
     ez = np.exp(lnz_sn)
-    #ez = np.exp(Z) #TODO: The exponentiation is now working well, if I input the Log, I don't get back the circle
-    #TODO: see if it's a display/mapping issue or why the exp is not working
-    #TODO: oddly enough, it's just the exp that is not working!
 
     #DISPLAY - choose one to see output #TODO: JIM if you change this, you get the 3 steps
     #transform = lnz    #displays the log in the complex plane
     #transform = lnz_sn #displays the translated
     transform = ez       #displays the final exponential
-
-    #OBS: if you do: transform = np.exp(lnz) you get back to the original picture, so this code is correct!
 
     #Back to Cartesians for display
     Xnew = np.real(transform).astype(np.float32)
@@ -68,11 +54,6 @@ def escher_reverse(x,y):
 
     #APPLY ESCHER TRANSFORM
     sn = (2 * np.pi * 1j) / (2 * np.pi * 1j + np.log(deformation_scale))
-    # if you don't like the 1j in the denominator you can do this instead:
-    # sn = ((4 * np.pi**2) / (np.log(deformation_scale)**2 + 4 * np.pi**2)
-    #       + (2 * np.pi * np.log(deformation_scale)) / (np.log(deformation_scale)**2 + 4 * np.pi**2) * 1j)
-    # I didn't derive that myself, I used the symbolab website. Both give the same value for sn.
-    # https://www.symbolab.com/solver/complex-numbers-calculator/simplify%20%5Cfrac%7B2%5Cpi%20i%7D%7B2%5Cpi%20i%20%2B%20ln%5Cleft(x%5Cright)%7D
     # note that this sn is equal to the inverse of the sn used in the escher_deformation function.
     # as explained in the last page of Lucia's pdf, the inverse needs 1 / gamma.
 
@@ -87,8 +68,6 @@ def escher_reverse(x,y):
     #transform = lnz    #displays the log in the complex plane
     #transform = lnz_sn #displays the translated
     transform = ez       #displays the final exponential
-
-    #OBS: if you do: transform = np.exp(lnz) you get back to the original picture, so this code is correct!
 
     #Back to Cartesians for display
     Xnew = np.real(transform).astype(np.float32)
