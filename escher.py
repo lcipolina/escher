@@ -159,8 +159,10 @@ def main():
     #***************************************************************
     # Select for Individual operations (only for debugging)
     #*************************************************************
+
+    #TODO: Don't forget to select the right coeff from above!!!
     #Znew = escher.log_z(Z)                 #Log
-    #Znew = escher.rotation(Znew, alpha)    #Rotation
+    #Znew = escher.rotation(Znew, coeff)    #Rotation
     Znew  = escher.exp_z(Znew)              #Exponentiation
     #endregion
 
