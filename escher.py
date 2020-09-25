@@ -83,7 +83,8 @@ class Escher:
 
 def meshgrid(src, resolution = 10):
     '''
-    :param inFile:
+    Function to meshgrid
+    :param src:
     :return: meshgrid of X,Y coordinates in Cartesian plane
     '''
     src_row, src_col = src.shape[0], src.shape[1]
@@ -99,15 +100,13 @@ def meshgrid(src, resolution = 10):
 
 def droste_transformation(x, y, c=1):
     for _ in range(2):
-
+        #pixels out of bounds
         indx = (np.abs(x) >= c) | (np.abs(y) >= c)
-
         x[indx] *= 1. / droste_scale
         y[indx] *= 1. / droste_scale
 
-        # if(all(lessThan(abs(uv),vec2(1./drostescale)))):
+        # Pixels close to zero
         indx = (np.abs(x) < c / droste_scale) & (np.abs(y) < c / droste_scale)
-        # uv *= drostescale;
         x[indx] *= droste_scale
         y[indx] *= droste_scale
     return x, y
@@ -115,12 +114,10 @@ def droste_transformation(x, y, c=1):
 
 
 def out_file(x,y,src,outFile,c=1,resolution = 10):
+    x,y = droste_transformation(x, y, c=1)
     #Center grid
-    src_row, src_col = src.shape[0], src.shape[1]
-    out_row = src_row * resolution  # multiply by 20 to get higher resolution results
-    out_col = src_row * resolution
-    x2 = (x / c + 1) * out_col / 2
-    y2 = (y / c + 1) * out_row / 2
+    x2 = (x / c + 1) * src.shape[0] / 2
+    y2 = (y / c + 1) * src.shape[1] / 2
     #Generate output image
     out2 = cv2.remap(src, x2, y2, interpolation=cv2.INTER_CUBIC, borderValue=200)
     cv2.imwrite(outFile, out2)
@@ -131,29 +128,31 @@ def main():
     # ****************************************************************
     # Input files
     # ****************************************************************
-    inFile = 'images/circle.JPG'
-    outFile = 'images/circle_LOG_jim2.png'
-    outFile2 = 'images/circle_LOG_reverse_jim.png'
+    inFile = 'images/escher_straight2.jpg'
+    #outFile = 'images/circle_LOG_jim2.png'
+    outFile = 'images/grid_straight2_try.png'
 
+    #Image cropping
+    #TODO: crop images (no margin)
+    #TODO: make dimensions square (same hght and length)
+    src = np.array(cv2.imread(inFile))
 
     # ****************************************************************
     # Escher Transformation
     # ****************************************************************
 
     #Create complex grid
-    src = np.array(cv2.imread(inFile))
-    # Create complex grid
-    x, y = meshgrid(src)
+    x, y = meshgrid(src) #center coordinates at (0,0)
     Z = cartesian_to_complex(x, y)  #convert Cartesian plane to complex
 
 
     # TODO: SELECT ONE: to do the forward deformation, use the reverse function (remap logic)
-    coeff = alpha      #From twisted to straight
+    #coeff = alpha      #From twisted to straight
     coeff = alpha_inv  #From straight to twisted
 
     # Apply Transformation
     escher = Escher(coeff)
-    Znew   = escher.twist(Z)
+    #Znew   = escher.twist(Z)
 
     #region
     #***************************************************************
@@ -163,7 +162,7 @@ def main():
     #TODO: Don't forget to select the right coeff from above!!!
     #Znew = escher.log_z(Z)                 #Log
     #Znew = escher.rotation(Znew, coeff)    #Rotation
-    Znew  = escher.exp_z(Znew)              #Exponentiation
+    Znew  = escher.exp_z(Z)              #Exponentiation
     #endregion
 
 
