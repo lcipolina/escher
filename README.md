@@ -7,4 +7,4 @@ The challenges of the project are:
 
   1. The painting presents a "Droste effect" where a picture contains smaller versions of the same picture embedded. Like a "Matrioshka" effect.
   
-  2. The painting embeds a spiral-like pattern that creates a sense of infinite loop to the viewer. 
+  2. The painting embeds a spiral-like pattern that creates a sense of infinite loop to the viewer. This is a conformal mapping.
