@@ -1,0 +1,31 @@
+Buenas, tenes que tener la siguiente estructura
+
+
+-Directorio
+    -Subdirectorio
+        -codigo.py
+        -fotos_tipo_1
+            -foto1.jpg
+            -...
+        -fotos_tipo_2
+            -foto1.jpg
+            -...
+
+Y despues de correrlo te queda lo siguiente:
+
+-Directorio
+    -Subdirectorio
+        -codigo.py
+        -fotos_tipo_1
+            -foto1.jpg
+            -...
+        -fotos_tipo_2
+            -foto1.jpg
+            -...
+    -Subdirectorio_blancoynegro
+        -fotos_tipo_1
+            -foto1.jpg
+            -...
+        -fotos_tipo_2
+            -foto1.jpg
+            -...
