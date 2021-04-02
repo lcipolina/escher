@@ -14,7 +14,7 @@ def load_images():
         img = cv2.imread(name)
         return img
     base='../images/centered/'
-    names = ['1.png', '2.png', '3.png','centered-new4.png','centered-new5.png']
+    names = ['1.png', '2.png', '3.png','4.png','5.png']
     response = {i+1:open_image(base+n) for i,n in enumerate(names)}
     return response
 
