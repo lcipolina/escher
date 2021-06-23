@@ -1,0 +1,29 @@
+1. FLIGHT SIMULATOR OVER VALLETA
+Selected the unique ones (~60) and converted to Black and White (BnW)
+
+TRANSFORMATIONS
+
+2. Twisterizer to collumns and buildings that are big enough
+Selected pictures from stages 1 and 2
+
+--> all the 1024x1024 
+--> from the "stage 1 pictures" :
+
+3. Pencilizer to pictures that are 1024X1024 only
+
+
+DATABASE of PICTURES:
+1. Valletta waterfront
+2. Valleta harbor
+3. Valletta buildings
+4. Tunisia building Facades
+5. Tunisia buildings
+6. Morocco building fronts
+   Morocco old town
+7. Malta facades
+8. Archs
+9. Ancient columns
+10. Ancient Archs
+
+
+
